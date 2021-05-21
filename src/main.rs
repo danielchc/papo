@@ -81,10 +81,13 @@ fn init(conf: Init) {
 		println!("Project already initialized");
 		return;
 	}
-
+	if(!Path::new(&conf.directory).is_dir()){
+		fs::create_dir(&conf.directory).expect("Unable to create directory");
+	}
+	
 	println!("Creating papo config...");
 	let config:Config=Config{ name: "".to_string(), src: "".to_string() };
-	let f = fs::File::create("papo.json").expect("Unable to create file");
+	let f = fs::File::create(file).expect("Unable to create file");
 	let mut bw = BufWriter::new(f);
 	serde_json::to_writer(bw, &config).expect("Failed writing :(");
 

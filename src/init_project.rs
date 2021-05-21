@@ -8,7 +8,7 @@ use crate::logger::{print_warning, print_success, print_info};
 
 pub fn init_project(conf: Init) {
 	let path= Path::new(&conf.directory);
-	let file= format!("{}papo.json",conf.directory);
+	let file= format!("{}/papo.json",conf.directory);
 	let mut config:Config=Config{ name: "".to_string(), src: "".to_string() };
 
 	if Path::new(&file).exists(){

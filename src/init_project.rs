@@ -22,9 +22,10 @@ pub fn init_project(conf: Init) {
 	print_info(&*format!("Creating {}...", file));
 
 	if conf.src {
-		fs::create_dir(&(format!("{}/src",conf.directory))).ok();
+		let srcdir:String=format!("{}/src",conf.directory);
+		fs::create_dir(&(srcdir)).ok();
 		config.src= "./src".to_string();
-		print_info(&*format!("Creating {}...", "./src"));
+		print_info(&*format!("Creating {}",srcdir));
 	}
 
 

@@ -1,22 +1,34 @@
-mod arguments;
-mod init_project;
-mod types;
-mod papo_json;
-mod logger;
-
-use std::{env};
+//
+//
+//		                                                                                          
+//		PPPPPPPPPPPPPPPPP            AAA                PPPPPPPPPPPPPPPPP         OOOOOOOOO     
+//		P::::::::::::::::P          A:::A               P::::::::::::::::P      OO:::::::::OO   
+//		P::::::PPPPPP:::::P        A:::::A              P::::::PPPPPP:::::P   OO:::::::::::::OO 
+//		PP:::::P     P:::::P      A:::::::A             PP:::::P     P:::::P O:::::::OOO:::::::O
+//		  P::::P     P:::::P     A:::::::::A              P::::P     P:::::P O::::::O   O::::::O
+//		  P::::P     P:::::P    A:::::A:::::A             P::::P     P:::::P O:::::O     O:::::O
+//		  P::::PPPPPP:::::P    A:::::A A:::::A            P::::PPPPPP:::::P  O:::::O     O:::::O
+//		  P:::::::::::::PP    A:::::A   A:::::A           P:::::::::::::PP   O:::::O     O:::::O
+//		  P::::PPPPPPPPP     A:::::A     A:::::A          P::::PPPPPPPPP     O:::::O     O:::::O
+//		  P::::P            A:::::AAAAAAAAA:::::A         P::::P             O:::::O     O:::::O
+//		  P::::P           A:::::::::::::::::::::A        P::::P             O:::::O     O:::::O
+//		  P::::P          A:::::AAAAAAAAAAAAA:::::A       P::::P             O::::::O   O::::::O
+//		PP::::::PP       A:::::A             A:::::A    PP::::::PP           O:::::::OOO:::::::O
+//		P::::::::P      A:::::A               A:::::A   P::::::::P            OO:::::::::::::OO 
+//		P::::::::P     A:::::A                 A:::::A  P::::::::P              OO:::::::::OO   
+//		PPPPPPPPPP    AAAAAAA                   AAAAAAA PPPPPPPPPP                OOOOOOOOO     
+//		 
+//
+//
 use std::path::Path;
-
-use clap::{Clap};
-use std::process::exit;
-use crate::arguments::{Opts,SubCommand};
-use crate::types::{Jdk};
-use crate::init_project::init_project;
-use crate::logger::print_error;
+use std::io::BufWriter;
+use std::fs;
+use crate::arguments::Init;
+use crate::papo_json::Config;
+use crate::logger::{print_warning, print_success, print_info};
 
 
 fn check_jdk(jdkdirarg: Option<String>) -> Jdk {
-
 	let mut result:Jdk=Jdk{
 		avaliable: false,
 		directory: "".to_string()

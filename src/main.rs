@@ -20,49 +20,12 @@
 //		 
 //
 //
-use std::{env, fs};
 use std::path::Path;
-use serde::{Deserialize, Serialize};
-
-use clap::{AppSettings, Clap};
-use std::process::exit;
 use std::io::BufWriter;
-
-#[derive(Clap)]
-#[clap(version = "1.0", author = "danielchc")]
-#[clap(setting = AppSettings::ColoredHelp)]
-struct Opts {
-	#[clap(short, long, parse(from_occurrences))]
-	verbose: i32,
-	#[clap(long)]
-	jdkdir: Option<String>,
-	#[clap(subcommand)]
-	subcmd: SubCommand,
-}
-
-#[derive(Clap)]
-enum SubCommand {
-	Init(Init),
-}
-
-#[derive(Clap)]
-struct Init {
-	#[clap(default_value = ".")]
-	directory: String,
-	#[clap(short, long)]
-	name: Option<String>,
-}
-
-struct Jdk{
-	avaliable:bool,
-	directory:String
-}
-
-#[derive(Debug, Deserialize, Serialize)]
-struct Config {
-	name: String,
-	src:String
-}
+use std::fs;
+use crate::arguments::Init;
+use crate::papo_json::Config;
+use crate::logger::{print_warning, print_success, print_info};
 
 
 fn check_jdk(jdkdirarg: Option<String>) -> Jdk {
@@ -82,35 +45,19 @@ fn check_jdk(jdkdirarg: Option<String>) -> Jdk {
 	}
 	result.avaliable=true;
 	return result;
+
 }
 
 fn main() {
 	let opts: Opts = Opts::parse();
 	let jdk_result:Jdk= check_jdk(opts.jdkdir);
 	if !jdk_result.avaliable {
-		eprintln!("ERROR: Java not found. Please set the JAVA_HOME variable in your environment or use the option --jdk to match the location of your Java installation");
+		print_error("ERROR: Java not found. Please set the JAVA_HOME variable in your environment or use the option --jdk to match the location of your Java installation");
 		exit(1);
 	}
 
 	match opts.subcmd {
-		SubCommand::Init(t) => init(t),
+		SubCommand::Init(t) => init_project(t),
 	}
 }
 
-fn init(conf: Init) {
-	let file= format!("{}/papo.json",conf.directory);
-	if Path::new(&file).exists(){
-		println!("Project already initialized");
-		return;
-	}
-	if(!Path::new(&conf.directory).is_dir()){
-		fs::create_dir(&conf.directory).expect("Unable to create directory");
-	}
-	
-	println!("Creating papo config...");
-	let config:Config=Config{ name: "".to_string(), src: "".to_string() };
-	let f = fs::File::create(file).expect("Unable to create file");
-	let mut bw = BufWriter::new(f);
-	serde_json::to_writer(bw, &config).expect("Failed writing :(");
-
-}

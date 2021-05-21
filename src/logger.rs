@@ -10,3 +10,6 @@ pub fn print_warning(msg:&str) {
 pub fn print_success(msg:&str) {
 	println!("{}",Colour::Green.paint(msg));
 }
+pub fn print_info(msg:&str) {
+	println!("{}",msg);
+}

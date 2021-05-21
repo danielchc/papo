@@ -18,7 +18,7 @@ pub enum SubCommand {
 
 #[derive(Clap)]
 pub struct Init {
-	#[clap(default_value = ".")]
+	#[clap(default_value = "./")]
 	pub directory: String,
 	#[clap(short = 'f', long="create-src")]
 	pub src:bool,

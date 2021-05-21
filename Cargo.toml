@@ -1,12 +1,11 @@
 [package]
 name = "papo"
 version = "0.1.0"
-authors = ["Dani <danielchenelcea@gmail.com>"]
+authors = ["Dani"]
 edition = "2018"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 clap = "3.0.0-beta.2"
-serde = { version = "1", features = ["derive"] }
-serde_json = "1"
+serde = { version = "1.0.126", features = ["derive"] }
+serde_json = "1.0.64"
+ansi_term = "0.12.1"

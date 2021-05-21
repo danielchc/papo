@@ -20,15 +20,25 @@
 //		 
 //
 //
+mod arguments;
+mod init_project;
+mod types;
+mod papo_json;
+mod logger;
+
+use std::{env};
 use std::path::Path;
-use std::io::BufWriter;
-use std::fs;
-use crate::arguments::Init;
-use crate::papo_json::Config;
-use crate::logger::{print_warning, print_success, print_info};
+
+use clap::{Clap};
+use std::process::exit;
+use crate::arguments::{Opts,SubCommand};
+use crate::types::{Jdk};
+use crate::init_project::init_project;
+use crate::logger::print_error;
 
 
 fn check_jdk(jdkdirarg: Option<String>) -> Jdk {
+
 	let mut result:Jdk=Jdk{
 		avaliable: false,
 		directory: "".to_string()
